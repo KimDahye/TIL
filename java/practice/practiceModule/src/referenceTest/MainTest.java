@@ -1,4 +1,4 @@
-package sophie;
+package referenceTest;
 
 import org.junit.Test;
 

@@ -1,4 +1,4 @@
-package sophie;
+package referenceTest;
 
 /**
  * Created by sophie on 2015. 11. 20..
