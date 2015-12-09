@@ -21,5 +21,6 @@ contains (Node x l r) e
 instance (Eq a) => Eq (BST a) where
 	EmptyBST == EmptyBST = True
 	Node x l r == Node x' l' r' = (x == x') && (l == l') && (r == r') 
-	_ == _ = Falseb 
+	_ == _ = False
+
 
