@@ -10,3 +10,5 @@ instance Monoid MyAny where
 instance Monoid MyAll where
 	mempty = MyAll True
 	MyAll x `mappend` MyAll y = MyAll (x && y)
+
+	

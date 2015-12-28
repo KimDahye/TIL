@@ -3,4 +3,10 @@ import System.Random
 import Control.Monad
 
 main = do
-	print "hello!"
+	gen <- getStdGen
+	play $ makeAnswer gen
+
+
+
+makeAnswer :: StdGen -> Int
+
