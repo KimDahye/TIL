@@ -5,6 +5,8 @@ import org.junit.Test;
 import java.lang.ref.Reference;
 import java.lang.ref.ReferenceQueue;
 import java.lang.ref.WeakReference;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.WeakHashMap;
 
 import static org.junit.Assert.*;

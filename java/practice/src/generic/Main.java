@@ -11,6 +11,7 @@ public class Main {
         }
     };
 
+
     public static <T> UnaryFunction<T> identityFunction() {
         return (UnaryFunction<T>) IDENTITY_FUNCTION;
     }
@@ -18,8 +19,11 @@ public class Main {
     public static void main (String[] args) {
         String[] strings = {"1", "b", "c"};
         UnaryFunction<String> sameString = identityFunction();
-        for(String s : strings) {
-            System.out.println(sameString.apply(s));
-        }
+        for(String s : strings) System.out.println(sameString.apply(s));
     }
+
+    private interface UnaryFunction<T> {
+        T apply (T arg);
+    }
+
 }
