@@ -12,6 +12,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface ExceptionTest {
-    Class<? extends Exception> exception();
-    int value() default 0;
+    //Class<? extends Exception> exception();
+    //int value();
+    int value2();
 }
