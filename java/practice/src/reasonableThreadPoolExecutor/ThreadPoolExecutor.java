@@ -32,6 +32,10 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
     private static int workerCountOf(int c)  { return c & CAPACITY; }
     private static int ctlOf(int rs, int wc) { return rs | wc; }
 
+    /** sophie 추가 */
+    private final AtomicInteger activeThreadCount = new AtomicInteger(0);
+
+
     /*
      * Bit field accessors that don't require unpacking ctl.
      * These depend on the bit layout and on workerCount being never negative.
@@ -768,6 +772,7 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
         try {
             while (task != null || (task = getTask()) != null) {
                 w.lock();
+                activeThreadCount.incrementAndGet(); // added by sophie
                 // If pool is stopping, ensure thread is interrupted;
                 // if not, ensure thread is not interrupted.  This
                 // requires a recheck in second case to deal with
@@ -794,6 +799,7 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
                 } finally {
                     task = null;
                     w.completedTasks++;
+                    activeThreadCount.decrementAndGet(); // added by sophie
                     w.unlock();
                 }
             }
@@ -980,22 +986,24 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
             throw new NullPointerException();
 
         int c = ctl.get();
-        if (workerCountOf(c) < corePoolSize) {
+        int workerCount = workerCountOf(c);
+        if (workerCount < corePoolSize) {
             //core 보다 작을 때
             if (addWorker(command, true))
                 return;
             c = ctl.get();
+            workerCount = workerCountOf(c);
         }
-        else if (workerCountOf(c) < maximumPoolSize) {
-            // core보다 크고 max보다 작을 때
+        else if (workerCount < maximumPoolSize && (workerCount == activeThreadCount.get())) {
+            // core보다 크고 max보다 작고
+            // 현재 생성된 worker가 모두 active 일 때
             if(addWorker(command, false))
                 return;
             c = ctl.get();
         }
         if (isRunning(c) && workQueue.offer(command)) {
-            // 돌아가는 worker가 max 초과이고
-            // executor running상태임
-            // 큐에 offer 가 성공했을 때
+            // 돌아가는 worker가 max 개수 초과이거나 돌아가는 worker 중 idle 상태인 게 있을 때 - 큐에 offer해본다 - 성공했을 때
+            // executor는 running상태임
             int recheck = ctl.get();
             if (! isRunning(recheck) && remove(command))
                 reject(command);
