@@ -11,8 +11,10 @@ import java.util.concurrent.locks.ReentrantLock;
  * Created by sophie on 2015. 12. 31..
  *
  * concurrent/ThreadPoolExecutor 소스코드 복사된 데에
- * execute method만 바꾼 것
+ * execute() method만 바꾼 것
  *
+ * activeThreadCount 추가 on 2016. 1. 4
+ * runWorker() 수정 on 2016. 1. 4
  */
 public class ThreadPoolExecutor extends AbstractExecutorService {
 
